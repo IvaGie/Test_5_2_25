@@ -32,3 +32,16 @@ print(primes)
 # Najdeme 1116. prvočíslo (index 1115, protože indexace začíná od 0)
 prime_1116 = primes[1115]
 print(f"1116. prvočíslo je: {prime_1116}")
+
+filename = 'syn2010_word.vyber-ascii.min.txt'
+
+try:
+    with open(filename, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        if prime_1116 <= len(lines):
+            line = lines[prime_1116 - 1].strip('\n')
+            print(f"slovo na radku {prime_1116}: {line}")
+        else:
+            print(f"Soubor nemá {prime_1116} řádků.")
+except FileNotFoundError:
+    print(f"Soubor '{filename}' nebyl nalezen.")
