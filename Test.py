@@ -45,3 +45,43 @@ try:
             print(f"Soubor nemá {prime_1116} řádků.")
 except FileNotFoundError:
     print(f"Soubor '{filename}' nebyl nalezen.")
+
+
+def printMatrix(matrix):
+    for row in matrix:
+        print(" ".join(row))
+
+def read_cipher_to_array(file_cipher):
+    try:
+        with open(file_cipher, 'r', encoding='utf-8') as file:
+            matrix = [list(line.strip().replace("'", "")) for line in file if line.strip()]
+            return matrix
+    except FileNotFoundError:
+        print(f"Soubor '{file_cipher}' nebyl nalezen.")
+        return []
+
+cipher = 'sifra.txt'
+cipher_matrix = read_cipher_to_array(cipher)
+printMatrix(cipher_matrix)
+
+
+def sort_and_rearrange_matrix(line, cipher_matrix):
+    print(line)
+    # Seřadíme písmena v abecedním pořadí a zjistíme původní pozice
+    sorted_word = sorted((char, idx) for idx, char in enumerate(line))
+    sorted_chars = [char for char, idx in sorted_word]
+    original_positions = [idx for char, idx in sorted_word]
+    print(sorted_chars)
+    # Zapamatujeme si původní pořadí písmen
+    sort_key = {original_positions[i]: sorted_chars[i] for i in range(len(sorted_chars))}
+    ##print(sort_key)
+    # Přeuspořádáme sloupce matice podle původního pořadí písmen ve vybraném slovu
+    rearranged_matrix = []
+    for row in cipher_matrix:
+        rearranged_row = [row[i] for i in original_positions]
+        rearranged_matrix.append(rearranged_row)
+    printMatrix(rearranged_matrix)
+    return rearranged_matrix, sort_key
+
+line = lines[prime_1116 - 1].strip()  # slovo na 1116. řádku
+rearranged_matrix, sort_key = sort_and_rearrange_matrix(line, cipher_matrix)
